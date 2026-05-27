@@ -3,233 +3,279 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bright Brain Tutorials - Marks Portal</title>
-    <!-- Tailwind CSS for modern layout -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Bright Brain Tutorials - Performance Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+<body class="bg-slate-100 font-sans min-h-screen flex flex-col justify-between">
 
-    <!-- Top Navigation Bar Header -->
-    <header class="bg-gradient-to-r from-blue-900 to-slate-900 text-white shadow-md border-b-4 border-blue-600">
-        <div class="max-w-6xl mx-auto px-4 py-5 flex justify-between items-center flex-wrap gap-4">
-            <div>
-                <h1 class="text-2xl font-extrabold tracking-tight">Bright Brain Tutorials</h1>
-                <p class="text-blue-300 text-xs font-semibold uppercase tracking-wider mt-0.5">Live Performance Portal</p>
-            </div>
-            <div class="flex gap-2">
-                <button onclick="switchView('student')" id="navStudent" class="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm cursor-pointer transition-all">Student Portal</button>
-                <button onclick="switchView('teacher')" id="navTeacher" class="bg-slate-800 text-slate-400 px-4 py-2 rounded-xl text-xs font-bold hover:text-white cursor-pointer transition-all">Teacher Login</button>
-            </div>
+    <!-- Header Banner -->
+    <header class="bg-blue-700 text-white shadow-md px-6 py-4 flex justify-between items-center">
+        <div>
+            <h1 class="text-xl font-bold tracking-wide">Bright Brain Tutorials</h1>
+            <p class="text-xs text-blue-200 font-medium tracking-wider">LIVE PERFORMANCE PORTAL</p>
+        </div>
+        <div>
+            <button id="toggleViewBtn" onclick="togglePortalView()" class="bg-blue-600 hover:bg-blue-800 text-white text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-lg border border-blue-500 transition-all shadow-sm">
+                <i class="fa-solid fa-user-shield mr-2"></i>Teacher Login
+            </button>
         </div>
     </header>
 
-    <!-- App Body Content Wrapper -->
-    <main class="max-w-4xl mx-auto px-4 py-10">
+    <!-- Main Content Area -->
+    <main class="flex-grow flex items-center justify-center p-4">
         
-        <!-- ================= STUDENT LAYOUT VIEW ================= -->
-        <div id="studentView" class="space-y-6">
-            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm text-center max-w-md mx-auto">
-                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-lg">
-                    <i class="fa-solid fa-magnifying-glass"></i>
+        <!-- STUDENT PORTAL CARD -->
+        <div id="studentCard" class="bg-white rounded-2xl shadow-xl p-6 max-w-md w-full border border-slate-200 transition-all duration-300">
+            <div class="text-center mb-6">
+                <div class="inline-flex p-3 bg-blue-50 text-blue-600 rounded-full mb-3">
+                    <i class="fa-solid fa-magnifying-glass text-xl"></i>
                 </div>
-                <h2 class="text-xl font-bold text-slate-900 mb-2">Check Your Test Score</h2>
-                <p class="text-slate-500 text-sm mb-6">Enter your registered full name below to access your score report instantly.</p>
-                
-                <div class="space-y-3 text-left">
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500">Student Full Name</label>
-                    <input type="text" id="searchName" placeholder="Enter your name..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all">
-                    <button onclick="fetchStudentScores()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-3 rounded-xl transition-all cursor-pointer mt-2 shadow-sm">
-                        <i class="fa-solid fa-address-card mr-1"></i> Retrieve Report Card
-                    </button>
-                </div>
+                <h2 class="text-xl font-bold text-slate-800">Check Your Test Score</h2>
+                <p class="text-sm text-slate-500 mt-1">Enter your registered full name below to access your score report instantly.</p>
             </div>
 
-            <!-- Student Results Response Table Box -->
-            <div id="studentResultsBox" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden hidden max-w-2xl mx-auto">
-                <div class="p-5 bg-slate-50 border-b border-slate-200 font-bold text-slate-700 flex justify-between items-center">
-                    <span><i class="fa-solid fa-poll text-blue-600 mr-1"></i> Performance Statement</span>
-                    <span id="displayStudentName" class="text-blue-600"></span>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Student Full Name</label>
+                    <input type="text" id="studentSearchName" placeholder="Enter name..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all">
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left">
+                
+                <button onclick="fetchStudentScores()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-3.5 px-4 rounded-xl shadow-lg shadow-blue-600/20 active:scale-[0.99] transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-id-card"></i> Retrieve Report Card
+                </button>
+            </div>
+
+            <!-- Student Results Display -->
+            <div id="resultsWrapper" class="hidden mt-6 border-t border-slate-100 pt-6">
+                <div class="flex items-center gap-2 text-blue-700 font-bold mb-3 text-sm">
+                    <i class="fa-solid fa-chart-simple"></i> Performance Statement
+                </div>
+                <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
+                    <table class="w-full text-left border-collapse bg-white">
                         <thead>
-                            <tr class="bg-slate-100/50 text-slate-500 text-xs font-bold border-b border-slate-200">
-                                <th class="py-3 px-5">Test Code & Topic</th>
-                                <th class="py-3 px-5 text-center">Marks Obtained</th>
-                                <th class="py-3 px-5 text-center">Max Marks</th>
-                                <th class="py-3 px-5 text-center">Percentage</th>
+                            <tr class="bg-slate-50 text-[11px] font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200">
+                                <th class="py-3 px-4">Test Code & Topic</th>
+                                <th class="py-3 px-4 text-center">Marks Obtained</th>
+                                <th class="py-3 px-4 text-center">Max Marks</th>
+                                <th class="py-3 px-4浏览 text-center">Percentage</th>
                             </tr>
                         </thead>
-                        <tbody id="studentRecordsTable" class="divide-y divide-slate-100 text-sm font-medium text-slate-700"></tbody>
+                        <tbody id="scoreTableBody" class="text-xs font-semibold text-slate-700 divide-y divide-slate-100">
+                            <!-- Injected rows -->
+                        </tbody>
                     </table>
                 </div>
             </div>
+
+            <!-- Local UI Errors -->
+            <div id="errorMessage" class="hidden mt-4 p-3 bg-red-50 border border-red-200 text-red-600 text-xs font-semibold rounded-xl flex items-center gap-2">
+                <i class="fa-solid fa-circle-exclamation text-sm"></i>
+                <span id="errorText">Error connecting to database.</span>
+            </div>
         </div>
 
-        <!-- ================= TEACHER LAYOUT VIEW ================= -->
-        <div id="teacherView" class="space-y-6 hidden max-w-xl mx-auto">
-            
-            <!-- Auth Protection Login Block Card -->
-            <div id="teacherAuthBox" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-center">
-                <div class="w-12 h-12 bg-slate-100 text-slate-700 rounded-full flex items-center justify-center mx-auto mb-4 text-lg">
-                    <i class="fa-solid fa-lock"></i>
+        <!-- TEACHER PORTAL CARD -->
+        <div id="teacherCard" class="hidden bg-white rounded-2xl shadow-xl p-6 max-w-md w-full border border-slate-200 transition-all duration-300">
+            <div id="pinGatewaySection" class="space-y-4">
+                <div class="text-center mb-4">
+                    <div class="inline-flex p-3 bg-amber-50 text-amber-600 rounded-full mb-3">
+                        <i class="fa-solid fa-lock text-xl"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-800">Teacher Verification</h2>
+                    <p class="text-sm text-slate-500 mt-1">Enter your master dashboard authorization security code PIN.</p>
                 </div>
-                <h2 class="text-lg font-bold text-slate-900 mb-4">Secure Portal Access</h2>
-                <div class="space-y-3 text-left">
-                    <input type="password" id="portalPassword" placeholder="Enter Teacher Pin..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all">
-                    <button onclick="verifyAccessPin()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm py-2.5 rounded-xl cursor-pointer transition-all">Verify Credentials</button>
+                <div>
+                    <input type="password" id="gatewayPin" placeholder="••••" class="w-full text-center bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-lg font-bold tracking-widest text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all">
                 </div>
+                <button onclick="verifyTeacherGatePIN()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold text-sm py-3 px-4 rounded-xl transition-all shadow-md">
+                    Verify & Unlock Dashboard
+                </button>
             </div>
 
-            <!-- Score Submission Dashboard Panel Form -->
-            <div id="teacherPanelBox" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hidden">
-                <h2 class="text-lg font-bold text-slate-900 mb-4 border-b border-slate-100 pb-2"><i class="fa-solid fa-square-plus text-blue-600 mr-1"></i> Record Test Mark</h2>
-                
-                <form id="scoreForm" class="space-y-4" onsubmit="submitScoreToCloud(event)">
+            <!-- Secret Form Panel -->
+            <div id="teacherFormPanel" class="hidden space-y-4">
+                <div class="border-b border-slate-100 pb-3 flex justify-between items-center">
+                    <span class="text-sm font-bold text-slate-800 flex items-center gap-1.5"><i class="fa-solid fa-circle-plus text-blue-600"></i> Upload New Test Score</span>
+                    <span class="text-[10px] bg-green-100 text-green-700 font-bold px-2 py-0.5 rounded-full uppercase">Secure Console</span>
+                </div>
+
+                <form id="scoreUploadForm" onsubmit="submitFormEntryToCloud(event)" class="space-y-3.5">
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Select Test Target Milestone</label>
-                        <select id="inputTestCode" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-600">
+                        <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Select Active Test Code</label>
+                        <select id="inputTestCode" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-600">
                             <option value="TS-01: Chemical Reactions (June 02)">TS-01: Chemical Reactions (June 02)</option>
                             <option value="TS-02: Acids, Bases and Salts (June 06)">TS-02: Acids, Bases and Salts (June 06)</option>
-                            <option value="TS-03: Life Processes (June 09)">TS-03: Life Processes (June 09)</option>
-                            <option value="TS-04: Control and Coordination (June 13)">TS-04: Control and Coordination (June 13)</option>
-                            <option value="TS-05: Light - Reflection & Refraction (June 16)">TS-05: Light - Reflection & Refraction (June 16)</option>
-                            <option value="TS-06: The Human Eye & Colorful World (June 20)">TS-06: The Human Eye & Colorful World (June 20)</option>
-                            <option value="TS-07: Electricity (June 23)">TS-07: Electricity (June 23)</option>
-                            <option value="TS-08: Half-Syllabus Mock (June 27)">TS-08: Half-Syllabus Mock (June 27)</option>
-                            <option value="TS-09: Our Environment (June 30)">TS-09: Our Environment (June 30)</option>
+                            <option value="TS-03: Metals and Non-Metals (June 12)">TS-03: Metals and Non-Metals (June 12)</option>
+                            <option value="TS-04: Carbon & Compounds (June 20)">TS-04: Carbon & Compounds (June 20)</option>
+                            <option value="TS-05: Periodic Classification (June 28)">TS-05: Periodic Classification (June 28)</option>
                         </select>
                     </div>
+
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Student Full Name</label>
-                        <input type="text" id="inputStudentName" required placeholder="Ex: Aarav Sharma" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-600">
+                        <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Student Full Name</label>
+                        <input type="text" id="inputStudentName" required placeholder="Full registered name" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-600">
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
+
+                    <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Marks Scored</label>
-                            <input type="number" id="inputMarks" required min="0" max="40" step="0.5" placeholder="0-40" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-600">
+                            <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Marks Obtained</label>
+                            <input type="number" id="inputMarks" required min="0" step="0.5" placeholder="Score" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-600">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Max Scale Cap</label>
-                            <input type="number" value="40" disabled class="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-bold text-slate-400">
+                            <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Maximum Marks</label>
+                            <input type="number" id="inputMaxMarks" required min="1" value="40" placeholder="e.g. 40, 80, 100" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-600">
                         </div>
                     </div>
-                    <button type="submit" id="submitBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-3 rounded-xl transition-all cursor-pointer shadow-sm flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-cloud-arrow-up"></i> Upload Score to Live Sheets
+
+                    <button type="submit" id="submitFormBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-3 rounded-xl shadow-md transition-all mt-2">
+                        Upload Score to Live Sheets
                     </button>
                 </form>
             </div>
+            
+            <div id="teacherConsoleMessage" class="hidden mt-4 p-3 text-xs font-semibold rounded-xl flex items-center gap-2 border"></div>
         </div>
-
     </main>
 
-    <!-- Bottom Footer Meta Layout Info -->
-    <footer class="mt-20 border-t border-slate-200 bg-white py-6 text-center text-xs font-semibold text-slate-500 tracking-wider">
-        © 2026 BRIGHT BRAIN TUTORIALS • GURUGRAM. ALL ACADEMIC PERFORMANCE MANAGEMENT RIGHTS RESERVED.
+    <!-- Footer Copyright Branding -->
+    <footer class="bg-slate-900 text-slate-400 text-center text-[10px] py-4 border-t border-slate-800 font-semibold tracking-wider uppercase px-4">
+        &copy; 2026 Bright Brain Tutorials &bull; Gurugram. All Academic Performance Management Rights Reserved.
     </footer>
 
-    <!-- Portal Core Logic Engine Script Controller -->
+    <!-- Operational Core Logic JavaScript Framework Engineering -->
     <script>
-        // CONFIGURATION PARAMETERS LINK TO GOOGLE DATABASE
-        const DEPLOYMENT_API_URL = "https://script.google.com/macros/s/AKfycbxV3XEmf8Zz2_cLJ-ddofu4ih4k4IuUAo4ZHmLiF1OCKPtYuedsyjC2zz3Kk83gyzEV/exec"; 
-        const ACCESS_PIN = "1987"; // Master Login entry security token code[cite: 6]
+        // CONFIGURATION NETWORK CREDENTIAL APIS
+        const DEPLOYMENT_API_URL = "https://script.google.com/macros/s/AKfycbxV3XEmf8Zz2_cLJ-ddofu4ih4k4IuUAo4ZHmLiF1OCKPtYuedsyjC2zz3Kk83gyzEV/exec";
+        const ACCESS_PIN = "031987";
 
-        function switchView(view) {
-            const isStudent = view === 'student';
-            document.getElementById('studentView').classList.toggle('hidden', !isStudent);
-            document.getElementById('teacherView').classList.toggle('hidden', isStudent);
-            
-            document.getElementById('navStudent').className = isStudent ? 'bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm transition-all' : 'bg-slate-100 text-slate-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-200 transition-all cursor-pointer';
-            document.getElementById('navTeacher').className = !isStudent ? 'bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm transition-all' : 'bg-slate-100 text-slate-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-200 transition-all cursor-pointer';
-        }
+        let systemViewState = "student";
 
-        function verifyAccessPin() {
-            const entered = document.getElementById('portalPassword').value;
-            if(entered === ACCESS_PIN) {
-                document.getElementById('teacherAuthBox').classList.add('hidden');
-                document.getElementById('teacherPanelBox').classList.remove('hidden');
+        function togglePortalView() {
+            const btn = document.getElementById("toggleViewBtn");
+            const sCard = document.getElementById("studentCard");
+            const tCard = document.getElementById("teacherCard");
+
+            hideUiAlerts();
+
+            if(systemViewState === "student") {
+                systemViewState = "teacher";
+                btn.innerHTML = `<i class="fa-solid fa-graduation-cap mr-2"></i>Student Portal`;
+                sCard.classList.add("hidden");
+                tCard.classList.remove("hidden");
             } else {
-                alert("Invalid Authorization Pin! Please try again.");
+                systemViewState = "student";
+                btn.innerHTML = `<i class="fa-solid fa-user-shield mr-2"></i>Teacher Login`;
+                tCard.classList.add("hidden");
+                sCard.classList.remove("hidden");
+                resetTeacherDashboardState();
             }
         }
 
-        async function submitScoreToCloud(event) {
-            event.preventDefault();
-            if (DEPLOYMENT_API_URL.includes("PASTE_YOUR_COPIED_URL")) {
-                alert("Setup Incomplete: Please paste your unique deployment API web address string inside line 125 first!");
-                return;
+        function verifyTeacherGatePIN() {
+            const val = document.getElementById("gatewayPin").value.trim();
+            if(val === ACCESS_PIN) {
+                document.getElementById("pinGatewaySection").classList.add("hidden");
+                document.getElementById("teacherFormPanel").classList.remove("hidden");
+                document.getElementById("gatewayPin").value = "";
+            } else {
+                alert("Authorization Denied. Invalid Secret Access Token Security Key.");
             }
+        }
 
-            const btn = document.getElementById('submitBtn');
+        function resetTeacherDashboardState() {
+            document.getElementById("pinGatewaySection").classList.remove("hidden");
+            document.getElementById("teacherFormPanel").classList.add("hidden");
+            document.getElementById("scoreUploadForm").reset();
+            document.getElementById("teacherConsoleMessage").classList.add("hidden");
+        }
+
+        function hideUiAlerts() {
+            document.getElementById("errorMessage").classList.add("hidden");
+            document.getElementById("teacherConsoleMessage").classList.add("hidden");
+        }
+
+        // BACKEND DATABASE SYNC CORE WORKERS
+        async function fetchStudentScores() {
+            const queryName = document.getElementById("studentSearchName").value.trim();
+            const wrapper = document.getElementById("resultsWrapper");
+            const tbody = document.getElementById("scoreTableBody");
+            const err = document.getElementById("errorMessage");
+            const errTxt = document.getElementById("errorText");
+
+            if(!queryName) { alert("Please type a name to lookup."); return; }
+
+            wrapper.classList.add("hidden");
+            err.classList.add("hidden");
+            tbody.innerHTML = "";
+
+            try {
+                const response = await fetch(`${DEPLOYMENT_API_URL}?name=${encodeURIComponent(queryName)}`);
+                const data = await response.json();
+
+                if(data.result === "success" && data.scores.length > 0) {
+                    data.scores.forEach(row => {
+                        const tr = document.createElement("tr");
+                        tr.className = "hover:bg-slate-50 transition-colors border-b border-slate-100";
+                        tr.innerHTML = `
+                            <td class="py-3 px-4 font-bold text-slate-800">${row.test}</td>
+                            <td class="py-3 px-4 text-center font-bold text-slate-700">${row.marks}</td>
+                            <td class="py-3 px-4 text-center text-slate-400">${row.maxMarks || 40}</td>
+                            <td class="py-3 px-4 text-center font-extrabold text-blue-600">${row.percentage}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                    wrapper.classList.remove("hidden");
+                } else {
+                    errTxt.innerText = `No registered performance records discovered matching "${queryName}".`;
+                    err.classList.remove("hidden");
+                }
+            } catch(ex) {
+                errTxt.innerText = "Error connecting to backend database cloud server endpoints.";
+                err.classList.remove("hidden");
+            }
+        }
+
+        async function submitFormEntryToCloud(e) {
+            e.preventDefault();
+            const btn = document.getElementById("submitFormBtn");
+            const alertBox = document.getElementById("teacherConsoleMessage");
+
             btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch animate-spin"></i> Syncing Record Data...';
+            btn.innerText = "Uploading to Database...";
+            alertBox.classList.add("hidden");
 
             const payload = {
-                action: "addScore",
-                name: document.getElementById('inputStudentName').value.trim(),
-                test: document.getElementById('inputTestCode').value,
-                marks: parseFloat(document.getElementById('inputMarks').value)
+                name: document.getElementById("inputStudentName").value.trim(),
+                test: document.getElementById("inputTestCode").value,
+                marks: Number(document.getElementById("inputMarks").value),
+                maxMarks: Number(document.getElementById("inputMaxMarks").value)
             };
 
             try {
-                await fetch(DEPLOYMENT_API_URL, {
+                const res = await fetch(DEPLOYMENT_API_URL, {
                     method: "POST",
-                    mode: "no-cors",
-                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(payload)
                 });
-                alert("Score uploaded and saved onto Google Sheet database successfully!");
-                document.getElementById('inputStudentName').value = '';
-                document.getElementById('inputMarks').value = '';
-            } catch (err) {
-                alert("Network communication failure. Please review your deployment settings.");
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload Score to Live Sheets';
-            }
-        }
+                const responseData = await res.json();
 
-        async function fetchStudentScores() {
-            const queryName = document.getElementById('searchName').value.trim();
-            if(!queryName) return alert("Please specify a student name to query.");
-
-            if (DEPLOYMENT_API_URL.includes("PASTE_YOUR_COPIED_URL")) {
-                alert("Setup Incomplete: Google Script database endpoints are missing from source configuration strings parameters.");
-                return;
-            }
-
-            const tableBody = document.getElementById('studentRecordsTable');
-            tableBody.innerHTML = '<tr><td colspan="4" class="py-8 text-center text-slate-400 font-medium"><i class="fa-solid fa-circle-notch animate-spin text-blue-600 mr-2"></i>Searching secure records archive...</td></tr>';
-            document.getElementById('studentResultsBox').classList.remove('hidden');
-
-            try {
-                const response = await fetch(`${DEPLOYMENT_API_URL}?action=getScores&name=${encodeURIComponent(queryName)}`);
-                const scores = await response.json();
-                tableBody.innerHTML = '';
-
-                if(scores.length === 0) {
-                    tableBody.innerHTML = '<tr><td colspan="4" class="py-8 text-center text-rose-500 font-semibold"><i class="fa-solid fa-triangle-exclamation mr-1"></i> No evaluated test profiles found for this name. Check spelling.</td></tr>';
-                    return;
+                if(responseData.result === "success") {
+                    alertBox.className = "mt-4 p-3 text-xs font-semibold rounded-xl flex items-center gap-2 border bg-green-50 border-green-200 text-green-700";
+                    alertBox.innerHTML = `<i class="fa-solid fa-circle-check text-sm"></i> Performance ledger entry added successfully!`;
+                    document.getElementById("scoreUploadForm").reset();
+                    document.getElementById("inputMaxMarks").value = "40"; // back to default
+                } else {
+                    throw new Error();
                 }
-
-                document.getElementById('displayStudentName').innerText = queryName;
-                scores.forEach(row => {
-                    const tr = `
-                        <tr class="hover:bg-slate-50/50 transition-all">
-                            <td class="py-3 px-5 font-semibold text-slate-900">${row.test}</td>
-                            <td class="py-3 px-5 text-center font-bold text-slate-800">${row.marks}</td>
-                            <td class="py-3 px-5 text-center font-semibold text-slate-400">40</td>
-                            <td class="py-3 px-5 text-center font-bold text-blue-600">${((row.marks/40)*100).toFixed(1)}%</td>
-                        </tr>
-                    `;
-                    tableBody.insertAdjacentHTML('beforeend', tr);
-                });
-            } catch(e) {
-                tableBody.innerHTML = '<tr><td colspan="4" class="py-8 text-center text-rose-500"><i class="fa-solid fa-circle-xmark mr-1"></i> Error connecting to backend database cloud server endpoints.</td></tr>';
+            } catch {
+                alertBox.className = "mt-4 p-3 text-xs font-semibold rounded-xl flex items-center gap-2 border bg-red-50 border-red-200 text-red-600";
+                alertBox.innerHTML = `<i class="fa-solid fa-circle-exclamation text-sm"></i> Critical network push failure. Check parameters.`;
+            } finally {
+                alertBox.classList.remove("hidden");
+                btn.disabled = false;
+                btn.innerText = "Upload Score to Live Sheets";
             }
         }
     </script>
 </body>
 </html>
-
