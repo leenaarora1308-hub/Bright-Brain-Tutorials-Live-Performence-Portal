@@ -9,57 +9,57 @@
 </head>
 <body class="bg-slate-100 font-sans min-h-screen flex flex-col justify-between">
 
-    <header class="bg-blue-700 text-white shadow-md px-6 py-4 flex justify-between items-center">
+    <header class="bg-blue-700 text-white shadow-md px-4 py-4 flex justify-between items-center">
         <div>
-            <h1 class="text-xl font-bold tracking-wide">Bright Brain Tutorials</h1>
-            <p class="text-xs text-blue-200 font-medium tracking-wider">LIVE PERFORMANCE PORTAL</p>
+            <h1 class="text-lg md:text-xl font-bold tracking-wide">Bright Brain Tutorials</h1>
+            <p class="text-[10px] text-blue-200 font-medium tracking-wider">LIVE PERFORMANCE PORTAL</p>
         </div>
         <div>
-            <button id="toggleViewBtn" onclick="togglePortalView()" class="bg-blue-600 hover:bg-blue-800 text-white text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-lg border border-blue-500 transition-all shadow-sm">
-                <i class="fa-solid fa-user-shield mr-2"></i>Teacher Login
+            <button id="toggleViewBtn" onclick="togglePortalView()" class="bg-blue-600 hover:bg-blue-800 text-white text-[11px] font-bold uppercase tracking-wider px-3 py-2 rounded-lg border border-blue-500 transition-all shadow-sm">
+                <i class="fa-solid fa-user-shield mr-1"></i>Teacher Login
             </button>
         </div>
     </header>
 
-    <main class="flex-grow flex items-center justify-center p-4">
+    <main class="flex-grow flex items-center justify-center p-2 md:p-4">
         
-        <div id="studentCard" class="bg-white rounded-2xl shadow-xl md:p-6 p-3 max-w-full w-full border border-slate-200 transition-all duration-300">
-            <div class="text-center mb-6">
-                <div class="inline-flex p-3 bg-blue-50 text-blue-600 rounded-full mb-3">
-                    <i class="fa-solid fa-magnifying-glass text-xl"></i>
+        <div id="studentCard" class="bg-white rounded-2xl shadow-xl p-3 md:p-6 w-full max-w-full border border-slate-200 transition-all duration-300">
+            <div class="text-center mb-5">
+                <div class="inline-flex p-2.5 bg-blue-50 text-blue-600 rounded-full mb-2">
+                    <i class="fa-solid fa-magnifying-glass text-lg"></i>
                 </div>
-                <h2 class="text-xl font-bold text-slate-800">Check Your Test Score</h2>
-                <p class="text-sm text-slate-500 mt-1">Enter your registered full name below to access your score report instantly.</p>
+                <h2 class="text-lg font-bold text-slate-800">Check Your Test Score</h2>
+                <p class="text-xs text-slate-500 mt-0.5">Enter your registered full name below to access your score report instantly.</p>
             </div>
 
-            <div class="space-y-4 max-w-md mx-auto">
+            <div class="space-y-3 max-w-md mx-auto mb-5">
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Student Full Name</label>
-                    <input type="text" id="studentSearchName" placeholder="Enter name..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all">
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Student Full Name</label>
+                    <input type="text" id="studentSearchName" placeholder="Enter name..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all">
                 </div>
                 
-                <button onclick="fetchStudentScores()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-3.5 px-4 rounded-xl shadow-lg shadow-blue-600/20 active:scale-[0.99] transition-all flex items-center justify-center gap-2">
+                <button onclick="fetchStudentScores()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-3 px-4 rounded-xl shadow-lg shadow-blue-600/20 active:scale-[0.99] transition-all flex items-center justify-center gap-2">
                     <i class="fa-solid fa-id-card"></i> Retrieve Report Card
                 </button>
             </div>
 
-            <div id="resultsWrapper" class="hidden mt-6 border-t border-slate-100 pt-6">
-                <div class="flex items-center gap-2 text-blue-700 font-bold mb-3 text-sm">
+            <div id="resultsWrapper" class="hidden border-t border-slate-100 pt-4">
+                <div class="flex items-center gap-2 text-blue-700 font-bold mb-3 text-xs md:text-sm">
                     <i class="fa-solid fa-chart-simple"></i> Performance Statement
                 </div>
                 <div class="w-full overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
-                    <table class="w-full text-left border-collapse bg-white">
+                    <table class="w-full text-left border-collapse bg-white table-layout-fixed">
                         <thead>
-                            <tr class="bg-slate-50 text-[11px] font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200">
-                                <th class="py-3 px-2 md:px-4">Test Code & Topic</th>
-                                <th class="py-3 px-2 md:px-4 text-center">Marks Obtained</th>
-                                <th class="py-3 px-2 md:px-4 text-center">Max Marks</th>
-                                <th class="py-3 px-2 md:px-4 text-center">Percentage</th>
-                                <th class="py-3 px-2 md:px-4 text-center">Rank</th>
-                                <th class="py-3 px-2 md:px-4 text-center">Status</th>
+                            <tr class="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200">
+                                <th class="py-3 px-2 md:px-4 w-[35%]">Test Code</th>
+                                <th class="py-3 px-1 md:px-4 text-center w-[15%]">Marks</th>
+                                <th class="py-3 px-1 md:px-4 text-center w-[13%]">Max</th>
+                                <th class="py-3 px-1 md:px-4 text-center w-[15%]">Pct</th>
+                                <th class="py-3 px-1 md:px-4 text-center w-[12%]">Rank</th>
+                                <th class="py-3 px-1 md:px-4 text-center w-[10%]">Status</th>
                             </tr>
                         </thead>
-                        <tbody id="scoreTableBody" class="text-xs font-semibold text-slate-700 divide-y divide-slate-100">
+                        <tbody id="scoreTableBody" class="text-[11px] md:text-xs font-semibold text-slate-700 divide-y divide-slate-100">
                             </tbody>
                     </table>
                 </div>
@@ -71,7 +71,7 @@
             </div>
         </div>
 
-        <div id="teacherCard" class="hidden bg-white rounded-2xl shadow-xl p-6 max-w-md w-full border border-slate-200 transition-all duration-300">
+        <div id="teacherCard" class="hidden bg-white rounded-2xl shadow-xl p-4 md:p-6 max-w-md w-full border border-slate-200 transition-all duration-300">
             <div id="pinGatewaySection" class="space-y-4">
                 <div class="text-center mb-4">
                     <div class="inline-flex p-3 bg-amber-50 text-amber-600 rounded-full mb-3">
@@ -245,20 +245,23 @@
                             
                             const isPassed = calcPct >= 33; 
                             const statusBadge = isPassed 
-                                ? `<span class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold text-[10px] uppercase tracking-wide">PASS</span>`
-                                : `<span class="bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-bold text-[10px] uppercase tracking-wide">FAIL</span>`;
+                                ? `<span class="bg-green-100 text-green-700 px-1 py-0.5 rounded text-[9px] font-bold tracking-wide">PASS</span>`
+                                : `<span class="bg-red-100 text-red-700 px-1 py-0.5 rounded text-[9px] font-bold tracking-wide">FAIL</span>`;
 
                             const finalRank = ranksMap[row.test][queryName.toLowerCase().trim()] || "-";
+                            
+                            // Shorten lengthy test codes automatically to save mobile screen real estate
+                            let shortTestName = row.test.split(':')[0] || row.test;
 
                             const tr = document.createElement("tr");
                             tr.className = "hover:bg-slate-50 transition-colors border-b border-slate-100";
                             tr.innerHTML = `
-                                <td class="py-3 px-2 md:px-4 font-bold text-slate-800">${row.test}</td>
-                                <td class="py-3 px-2 md:px-4 text-center font-bold text-slate-700">${currentMarks}</td>
-                                <td class="py-3 px-2 md:px-4 text-center text-slate-400">${currentMax}</td>
-                                <td class="py-3 px-2 md:px-4 text-center font-extrabold text-blue-600">${calcPct.toFixed(1)}%</td>
-                                <td class="py-3 px-2 md:px-4 text-center font-bold text-amber-600"><i class="fa-solid fa-trophy text-amber-500/40 text-[10px] mr-0.5"></i> # ${finalRank}</td>
-                                <td class="py-3 px-2 md:px-4 text-center font-bold">${statusBadge}</td>
+                                <td class="py-3 px-2 font-bold text-slate-800 break-words">${shortTestName}</td>
+                                <td class="py-3 px-1 text-center font-bold text-slate-700">${currentMarks}</td>
+                                <td class="py-3 px-1 text-center text-slate-400">${currentMax}</td>
+                                <td class="py-3 px-1 text-center font-extrabold text-blue-600">${calcPct.toFixed(1)}%</td>
+                                <td class="py-3 px-1 text-center font-bold text-amber-600">#${finalRank}</td>
+                                <td class="py-3 px-1 text-center font-bold">${statusBadge}</td>
                             `;
                             tbody.appendChild(tr);
                         });
