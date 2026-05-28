@@ -9,7 +9,6 @@
 </head>
 <body class="bg-slate-100 font-sans min-h-screen flex flex-col justify-between">
 
-    <!-- Header Banner -->
     <header class="bg-blue-700 text-white shadow-md px-6 py-4 flex justify-between items-center">
         <div>
             <h1 class="text-xl font-bold tracking-wide">Bright Brain Tutorials</h1>
@@ -22,11 +21,9 @@
         </div>
     </header>
 
-    <!-- Main Content Area -->
     <main class="flex-grow flex items-center justify-center p-4">
         
-        <!-- STUDENT PORTAL CARD -->
-        <div id="studentCard" class="bg-white rounded-2xl shadow-xl p-6 max-w-md w-full border border-slate-200 transition-all duration-300">
+        <div id="studentCard" class="bg-white rounded-2xl shadow-xl p-6 max-w-2xl w-full border border-slate-200 transition-all duration-300">
             <div class="text-center mb-6">
                 <div class="inline-flex p-3 bg-blue-50 text-blue-600 rounded-full mb-3">
                     <i class="fa-solid fa-magnifying-glass text-xl"></i>
@@ -35,7 +32,7 @@
                 <p class="text-sm text-slate-500 mt-1">Enter your registered full name below to access your score report instantly.</p>
             </div>
 
-            <div class="space-y-4">
+            <div class="space-y-4 max-w-md mx-auto">
                 <div>
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Student Full Name</label>
                     <input type="text" id="studentSearchName" placeholder="Enter name..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all">
@@ -46,7 +43,6 @@
                 </button>
             </div>
 
-            <!-- Student Results Display -->
             <div id="resultsWrapper" class="hidden mt-6 border-t border-slate-100 pt-6">
                 <div class="flex items-center gap-2 text-blue-700 font-bold mb-3 text-sm">
                     <i class="fa-solid fa-chart-simple"></i> Performance Statement
@@ -58,24 +54,23 @@
                                 <th class="py-3 px-4">Test Code & Topic</th>
                                 <th class="py-3 px-4 text-center">Marks Obtained</th>
                                 <th class="py-3 px-4 text-center">Max Marks</th>
-                                <th class="py-3 px-4浏览 text-center">Percentage</th>
+                                <th class="py-3 px-4 text-center">Percentage</th>
+                                <th class="py-3 px-4 text-center">Rank</th>
+                                <th class="py-3 px-4 text-center">Status</th>
                             </tr>
                         </thead>
                         <tbody id="scoreTableBody" class="text-xs font-semibold text-slate-700 divide-y divide-slate-100">
-                            <!-- Injected rows -->
-                        </tbody>
+                            </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- Local UI Errors -->
             <div id="errorMessage" class="hidden mt-4 p-3 bg-red-50 border border-red-200 text-red-600 text-xs font-semibold rounded-xl flex items-center gap-2">
                 <i class="fa-solid fa-circle-exclamation text-sm"></i>
                 <span id="errorText">Error connecting to database.</span>
             </div>
         </div>
 
-        <!-- TEACHER PORTAL CARD -->
         <div id="teacherCard" class="hidden bg-white rounded-2xl shadow-xl p-6 max-w-md w-full border border-slate-200 transition-all duration-300">
             <div id="pinGatewaySection" class="space-y-4">
                 <div class="text-center mb-4">
@@ -93,7 +88,6 @@
                 </button>
             </div>
 
-            <!-- Secret Form Panel -->
             <div id="teacherFormPanel" class="hidden space-y-4">
                 <div class="border-b border-slate-100 pb-3 flex justify-between items-center">
                     <span class="text-sm font-bold text-slate-800 flex items-center gap-1.5"><i class="fa-solid fa-circle-plus text-blue-600"></i> Upload New Test Score</span>
@@ -138,16 +132,14 @@
         </div>
     </main>
 
-    <!-- Footer Copyright Branding -->
     <footer class="bg-slate-900 text-slate-400 text-center text-[10px] py-4 border-t border-slate-800 font-semibold tracking-wider uppercase px-4">
         &copy; 2026 Bright Brain Tutorials &bull; Gurugram. All Academic Performance Management Rights Reserved.
     </footer>
 
-    <!-- Operational Core Logic JavaScript Framework Engineering -->
     <script>
         // CONFIGURATION NETWORK CREDENTIAL APIS
         const DEPLOYMENT_API_URL = "https://script.google.com/macros/s/AKfycbxV3XEmf8Zz2_cLJ-ddofu4ih4k4IuUAo4ZHmLiF1OCKPtYuedsyjC2zz3Kk83gyzEV/exec";
-        const ACCESS_PIN = "031987";
+        const ACCESS_PIN = "032001";
 
         let systemViewState = "student";
 
@@ -195,7 +187,6 @@
             document.getElementById("teacherConsoleMessage").classList.add("hidden");
         }
 
-        // BACKEND DATABASE SYNC CORE WORKERS
         async function fetchStudentScores() {
             const queryName = document.getElementById("studentSearchName").value.trim();
             const wrapper = document.getElementById("resultsWrapper");
@@ -210,25 +201,74 @@
             tbody.innerHTML = "";
 
             try {
-                const response = await fetch(`${DEPLOYMENT_API_URL}?name=${encodeURIComponent(queryName)}`);
+                const response = await fetch(`${DEPLOYMENT_API_URL}`);
                 const data = await response.json();
 
-                if(data.result === "success" && data.scores.length > 0) {
+                if(data.result === "success") {
+                    const testGroups = {};
+                    
                     data.scores.forEach(row => {
-                        const tr = document.createElement("tr");
-                        tr.className = "hover:bg-slate-50 transition-colors border-b border-slate-100";
-                        tr.innerHTML = `
-                            <td class="py-3 px-4 font-bold text-slate-800">${row.test}</td>
-                            <td class="py-3 px-4 text-center font-bold text-slate-700">${row.marks}</td>
-                            <td class="py-3 px-4 text-center text-slate-400">${row.maxMarks || 40}</td>
-                            <td class="py-3 px-4 text-center font-extrabold text-blue-600">${((row.marks / (row.maxMarks || 40)) * 100).toFixed(1)}%</td>
-                        `;
-                        tbody.appendChild(tr);
+                        const tCode = row.test;
+                        if (!testGroups[tCode]) { testGroups[tCode] = []; }
+                        testGroups[tCode].push({
+                            name: row.name,
+                            marks: Number(row.marks),
+                            maxMarks: Number(row.maxMarks) || 40
+                        });
                     });
-                    wrapper.classList.remove("hidden");
+
+                    const ranksMap = {};
+                    
+                    Object.keys(testGroups).forEach(tCode => {
+                        testGroups[tCode].sort((a, b) => b.marks - a.marks);
+                        
+                        ranksMap[tCode] = {};
+                        let currentRank = 1;
+                        
+                        for (let i = 0; i < testGroups[tCode].length; i++) {
+                            if (i > 0 && testGroups[tCode][i].marks < testGroups[tCode][i-1].marks) {
+                                currentRank = i + 1;
+                            }
+                            ranksMap[tCode][testGroups[tCode][i].name.toLowerCase().trim()] = currentRank;
+                        }
+                    });
+
+                    const targetStudentScores = data.scores.filter(row => 
+                        row.name.toLowerCase().trim() === queryName.toLowerCase().trim()
+                    );
+
+                    if (targetStudentScores.length > 0) {
+                        targetStudentScores.forEach(row => {
+                            const currentMax = Number(row.maxMarks) || 40;
+                            const currentMarks = Number(row.marks);
+                            const calcPct = ((currentMarks / currentMax) * 100);
+                            
+                            const isPassed = calcPct >= 33; 
+                            const statusBadge = isPassed 
+                                ? `<span class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold text-[10px] uppercase tracking-wide">PASS</span>`
+                                : `<span class="bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-bold text-[10px] uppercase tracking-wide">FAIL</span>`;
+
+                            const finalRank = ranksMap[row.test][queryName.toLowerCase().trim()] || "-";
+
+                            const tr = document.createElement("tr");
+                            tr.className = "hover:bg-slate-50 transition-colors border-b border-slate-100";
+                            tr.innerHTML = `
+                                <td class="py-3 px-4 font-bold text-slate-800">${row.test}</td>
+                                <td class="py-3 px-4 text-center font-bold text-slate-700">${currentMarks}</td>
+                                <td class="py-3 px-4 text-center text-slate-400">${currentMax}</td>
+                                <td class="py-3 px-4 text-center font-extrabold text-blue-600">${calcPct.toFixed(1)}%</td>
+                                <td class="py-3 px-4 text-center font-bold text-amber-600"><i class="fa-solid fa-trophy text-amber-500/40 text-[10px] mr-0.5"></i> # ${finalRank}</td>
+                                <td class="py-3 px-4 text-center font-bold">${statusBadge}</td>
+                            `;
+                            tbody.appendChild(tr);
+                        });
+                        wrapper.classList.remove("hidden");
+                    } else {
+                        errTxt.innerText = `No registered performance records discovered matching "${queryName}".`;
+                        err.classList.remove("hidden");
+                    }
                 } else {
-                    errTxt.innerText = `No registered performance records discovered matching "${queryName}".`;
-                    err.classList.remove("hidden");
+                    throw new Error();
                 }
             } catch(ex) {
                 errTxt.innerText = "Error connecting to backend database cloud server endpoints.";
@@ -263,7 +303,7 @@
                     alertBox.className = "mt-4 p-3 text-xs font-semibold rounded-xl flex items-center gap-2 border bg-green-50 border-green-200 text-green-700";
                     alertBox.innerHTML = `<i class="fa-solid fa-circle-check text-sm"></i> Performance ledger entry added successfully!`;
                     document.getElementById("scoreUploadForm").reset();
-                    document.getElementById("inputMaxMarks").value = "40"; // back to default
+                    document.getElementById("inputMaxMarks").value = "40";
                 } else {
                     throw new Error();
                 }
