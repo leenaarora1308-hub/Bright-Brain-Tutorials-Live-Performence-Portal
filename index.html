@@ -13,14 +13,16 @@
     <header class="bg-slate-800 text-white shadow-md px-4 py-4 flex justify-between items-center border-b border-slate-700">
         <div>
             <h1 class="text-lg md:text-xl font-bold tracking-wide text-blue-400">Bright Brain Tutorials</h1>
-            <p class="text-[10px] text-slate-400 font-medium tracking-wider">LIVE PERFORMANCE DASHBOARD</p>
+            <!-- SECRET TRIGGER: Tapping this text 3 times unlocks the teacher verification panel secretly -->
+            <p id="secretTeacherTrigger" onclick="handleSecretTeacherTap()" class="text-[10px] text-slate-400 font-medium tracking-wider cursor-default select-none active:text-slate-500">LIVE PERFORMANCE DASHBOARD</p>
         </div>
         <div class="flex gap-2">
             <button id="logoutBtn" onclick="handleStudentLogout()" class="hidden bg-slate-700 hover:bg-slate-600 text-slate-300 text-[11px] font-bold uppercase tracking-wider px-3 py-2 rounded-lg transition-all">
                 <i class="fa-solid fa-right-from-bracket mr-1"></i>Logout
             </button>
-            <button id="toggleViewBtn" onclick="togglePortalView()" class="bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold uppercase tracking-wider px-3 py-2 rounded-lg transition-all shadow-sm">
-                <i class="fa-solid fa-user-shield mr-1"></i>Teacher Login
+            <!-- Hidden Student Portal Back-Button (Only visible when teacher dashboard is open) -->
+            <button id="backToStudentBtn" onclick="exitTeacherPortalView()" class="hidden bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold uppercase tracking-wider px-3 py-2 rounded-lg transition-all shadow-sm">
+                <i class="fa-solid fa-graduation-cap mr-1"></i>Student Portal
             </button>
         </div>
     </header>
@@ -81,7 +83,7 @@
             </div>
         </div>
 
-        <!-- TEACHER PORTAL CARD -->
+        <!-- TEACHER PORTAL CARD (Completely secret from students) -->
         <div id="teacherCard" class="hidden bg-slate-800 rounded-2xl shadow-xl p-4 md:p-6 max-w-md w-full border border-slate-700 transition-all duration-300">
             <div id="pinGatewaySection" class="space-y-4">
                 <div class="text-center mb-4">
@@ -166,6 +168,8 @@
 
         let systemViewState = "student";
         let globalCachedCards = {}; 
+        let secretTapCount = 0;
+        let secretTapTimer = null;
 
         document.addEventListener("DOMContentLoaded", () => {
             const savedId = localStorage.getItem("app_student_auth_id");
@@ -175,6 +179,42 @@
             }
         });
 
+        // SECRET SHORTCUT FOR TEACHER PORTAL GUEST ACCESS
+        function handleSecretTeacherTap() {
+            secretTapCount++;
+            clearTimeout(secretTapTimer);
+            
+            // Taps must happen within 1.5 seconds or counter resets
+            secretTapTimer = setTimeout(() => { secretTapCount = 0; }, 1500);
+
+            if (secretTapCount === 3) {
+                secretTapCount = 0;
+                enterTeacherPortalView();
+            }
+        }
+
+        function enterTeacherPortalView() {
+            systemViewState = "teacher";
+            hideUiAlerts();
+            document.getElementById("studentCard").classList.add("hidden");
+            document.getElementById("logoutBtn").classList.add("hidden");
+            document.getElementById("teacherCard").classList.remove("hidden");
+            document.getElementById("backToStudentBtn").classList.remove("hidden");
+        }
+
+        function exitTeacherPortalView() {
+            systemViewState = "student";
+            document.getElementById("teacherCard").classList.add("hidden");
+            document.getElementById("backToStudentBtn").classList.add("hidden");
+            document.getElementById("studentCard").classList.remove("hidden");
+            resetTeacherDashboardState();
+            
+            const savedId = localStorage.getItem("app_student_auth_id");
+            if(savedId) {
+                document.getElementById("logoutBtn").classList.remove("hidden");
+            }
+        }
+
         async function handleStudentLogin() {
             const idInput = document.getElementById("studentSearchId").value.trim().toUpperCase();
             if(!idInput) { alert("Please type your Student ID to log in."); return; }
@@ -182,7 +222,6 @@
             const btn = document.getElementById("loginSubmitBtn");
             const btnTxt = document.getElementById("loginBtnText");
             
-            // Loading on Login Screen
             btn.disabled = true;
             btnTxt.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Authenticating ID...`;
             
@@ -216,31 +255,6 @@
             globalCachedCards = {};
         }
 
-        function togglePortalView() {
-            const btn = document.getElementById("toggleViewBtn");
-            const sCard = document.getElementById("studentCard");
-            const tCard = document.getElementById("teacherCard");
-
-            hideUiAlerts();
-
-            if(systemViewState === "student") {
-                systemViewState = "teacher";
-                btn.innerHTML = `<i class="fa-solid fa-graduation-cap mr-2"></i>Student Portal`;
-                sCard.classList.add("hidden");
-                tCard.classList.remove("hidden");
-                document.getElementById("logoutBtn").classList.add("hidden");
-            } else {
-                systemViewState = "student";
-                btn.innerHTML = `<i class="fa-solid fa-user-shield mr-2"></i>Teacher Login`;
-                tCard.classList.add("hidden");
-                sCard.classList.remove("hidden");
-                resetTeacherDashboardState();
-                
-                const savedId = localStorage.getItem("app_student_auth_id");
-                if(savedId) document.getElementById("logoutBtn").classList.remove("hidden");
-            }
-        }
-
         function resetTeacherDashboardState() {
             document.getElementById("pinGatewaySection").classList.remove("hidden");
             document.getElementById("teacherFormPanel").classList.add("hidden");
@@ -262,7 +276,6 @@
             const err = document.getElementById("errorMessage");
             const errTxt = document.getElementById("errorText");
 
-            // Premium Skeleton Feed Loader
             feedContainer.innerHTML = `
                 <div class="text-center py-10 text-slate-400 font-medium">
                     <i class="fa-solid fa-circle-notch fa-spin text-3xl text-blue-500 mb-3 block mx-auto"></i>
@@ -401,18 +414,15 @@
             const targetBtn = document.getElementById(`viewBtn-${elementIdx}`);
             if (!targetBtn) return;
 
-            // Trigger visual button loader inside the row item list
             targetBtn.disabled = true;
             targetBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Fetching Analytics...`;
 
-            // Short tactical loading delay to show analytics are assembling smoothly
             setTimeout(() => {
                 if(globalCachedCards[testKey]) {
                     document.getElementById("autoDashboardPanel").classList.add("hidden");
                     document.getElementById("activeCardContainer").innerHTML = globalCachedCards[testKey];
                     document.getElementById("resultsWrapper").classList.remove("hidden");
                 }
-                // Reset button text style properties behind the curtain
                 targetBtn.disabled = false;
                 targetBtn.innerHTML = `View Result`;
             }, 600);
@@ -422,6 +432,17 @@
             document.getElementById("resultsWrapper").classList.add("hidden");
             document.getElementById("activeCardContainer").innerHTML = "";
             document.getElementById("autoDashboardPanel").classList.remove("hidden");
+        }
+
+        async function verifyTeacherGatePIN() {
+            const val = document.getElementById("gatewayPin").value.trim();
+            if(val === ACCESS_PIN) {
+                document.getElementById("pinGatewaySection").classList.add("hidden");
+                document.getElementById("teacherFormPanel").classList.remove("hidden");
+                document.getElementById("gatewayPin").value = "";
+            } else {
+                alert("Authorization Denied. Invalid PIN.");
+            }
         }
 
         async function submitFormEntryToCloud(e) {
