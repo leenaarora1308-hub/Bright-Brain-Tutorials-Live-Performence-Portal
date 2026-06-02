@@ -3,58 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bright Brain Tutorials - Elite Performance Portal</title>
+    <title>Bright Brain Tutorials - Elite OTP Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        /* Custom Premium UI Glow Patterns */
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .premium-glass {
             background: linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.6) 100%);
             border: 1px solid rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
         }
-        .cyber-glow {
-            box-shadow: 0 0 35px -5px rgba(59, 130, 246, 0.25), 0 0 20px -8px rgba(99, 102, 241, 0.2);
-        }
+        .cyber-glow { box-shadow: 0 0 35px -5px rgba(59, 130, 246, 0.25), 0 0 20px -8px rgba(99, 102, 241, 0.2); }
         .orange-premium-glow {
             box-shadow: 0 20px 45px -10px rgba(234, 88, 12, 0.4), 0 0 25px -5px rgba(249, 115, 22, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.15);
         }
-        /* Custom Custom Scrollbar Mechanics */
-        .custom-scroll::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scroll::-webkit-scrollbar-track {
-            background: rgba(15, 23, 42, 0.3);
-            border-radius: 20px;
-        }
-        .custom-scroll::-webkit-scrollbar-thumb {
-            background: rgba(59, 130, 246, 0.2);
-            border-radius: 20px;
-        }
-        .custom-scroll::-webkit-scrollbar-thumb:hover {
-            background: rgba(59, 130, 246, 0.4);
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in {
-            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.3); border-radius: 20px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.2); border-radius: 20px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     </style>
 </head>
 <body class="bg-[#0b0f19] min-h-screen flex flex-col justify-between text-slate-100 relative overflow-x-hidden antialiased">
 
-    <!-- Ambient High-Definition Structural Light Meshes -->
     <div class="absolute top-[-15%] right-[-10%] w-[700px] h-[700px] bg-gradient-to-br from-blue-600/15 to-purple-600/0 rounded-full blur-[140px] pointer-events-none"></div>
     <div class="absolute bottom-[-10%] left-[-15%] w-[800px] h-[800px] bg-gradient-to-tr from-indigo-600/15 to-cyan-600/0 rounded-full blur-[150px] pointer-events-none"></div>
 
-    <!-- Top Navigation Header -->
     <header class="bg-[#0f1524]/60 border-b border-slate-800/40 backdrop-blur-xl px-6 py-4 flex justify-between items-center sticky top-0 z-50">
         <div class="flex items-center gap-3.5">
             <div class="bg-gradient-to-tr from-blue-600 to-indigo-600 p-2.5 rounded-xl shadow-lg shadow-blue-500/20 ring-1 ring-white/10">
@@ -75,51 +51,68 @@
         </div>
     </header>
 
-    <!-- Main Content Container Frame -->
-    <main class="flex-grow flex items-center justify-center p-4 md:p-10 relative z-10 w-full max-w-5xl mx-auto">
-        
-        <!-- MAIN PORTAL DISPLAY BOX -->
+    <div id="otpPopupBanner" class="hidden fixed top-20 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-xs font-black px-6 py-3.5 rounded-2xl shadow-2xl z-[100] border border-blue-400/40 flex items-center gap-3 animate-fade-in">
+        <i class="fa-solid fa-comment-sms text-base animate-bounce"></i>
+        <span>SECURITY SMS MESSAGE: Your verification code is <span id="popupOtpCode" class="text-yellow-300 bg-black/30 px-2 py-0.5 rounded font-black tracking-widest text-sm">0000</span></span>
+    </div>
+
+    <main class="flex-grow flex items-center justify-center p-4 relative z-10 w-full max-w-5xl mx-auto">
         <div id="studentCard" class="w-full max-w-xl transition-all duration-300">
             
-            <!-- 1. EXQUISITE ID PROFILE LOGIN PANEL -->
-            <div id="loginScreenPanel" class="premium-glass rounded-3xl p-6 md:p-10 shadow-2xl cyber-glow text-center border border-white/[0.03]">
-                <div class="mb-8 relative">
-                    <div class="inline-flex p-4 bg-gradient-to-b from-blue-500/10 to-indigo-500/0 text-blue-400 rounded-2xl mb-4 border border-blue-500/20 relative shadow-inner">
-                        <i class="fa-solid fa-id-card-clip text-3xl"></i>
+            <div id="phoneScreenPanel" class="premium-glass rounded-3xl p-6 md:p-10 shadow-2xl cyber-glow text-center border border-white/[0.03]">
+                <div class="mb-8">
+                    <div class="inline-flex p-4 bg-gradient-to-b from-blue-500/10 to-indigo-500/0 text-blue-400 rounded-2xl mb-4 border border-blue-500/20 shadow-inner">
+                        <i class="fa-solid fa-mobile-screen-button text-3xl"></i>
                     </div>
-                    <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Access Portal</h2>
-                    <p class="text-xs text-slate-400 mt-2 max-w-xs mx-auto leading-relaxed">Provide your dedicated student operational identification index parameter to fetch deep analytics profiles.</p>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">OTP Login</h2>
+                    <p class="text-xs text-slate-400 mt-2 max-w-xs mx-auto leading-relaxed">Enter your registered 10-digit mobile number to request a secure entry code.</p>
                 </div>
                 
                 <div class="space-y-5 max-w-sm mx-auto">
                     <div class="text-left">
-                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Student Access Credential Key</label>
-                        <div class="relative group">
-                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500 group-focus-within:text-blue-400 transition-colors">
-                                <i class="fa-solid fa-key text-xs"></i>
-                            </div>
-                            <input type="text" id="studentSearchId" placeholder="e.g. BB-101" class="w-full bg-[#080c14]/90 border border-slate-800/80 rounded-xl pl-9 pr-4 py-3.5 text-sm font-bold text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent uppercase tracking-widest transition-all">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Registered Phone Number</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500 font-bold text-xs">+91</div>
+                            <input type="tel" id="studentPhoneInput" maxlength="10" placeholder="Enter 10 digit number" class="w-full bg-[#080c14]/90 border border-slate-800/80 rounded-xl pl-12 pr-4 py-3.5 text-sm font-bold text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 tracking-widest transition-all">
                         </div>
                     </div>
-                    <button id="loginSubmitBtn" onclick="handleStudentLogin()" class="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:opacity-95 text-white font-extrabold text-xs uppercase tracking-wider py-4 px-4 rounded-xl shadow-xl shadow-blue-500/10 active:scale-[0.98] transition-all flex items-center justify-center gap-2 duration-200">
-                        <span id="loginBtnText" class="flex items-center gap-2">
-                            Initialize Synchronizer Console <i class="fa-solid fa-arrow-right text-xs"></i>
-                        </span>
+                    <button id="sendOtpBtn" onclick="requestLoginOTP()" class="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:opacity-95 text-white font-extrabold text-xs uppercase tracking-wider py-4 px-4 rounded-xl shadow-xl shadow-blue-500/10 active:scale-[0.98] transition-all flex items-center justify-center gap-2 duration-200">
+                        Request Verification Code <i class="fa-solid fa-paper-plane text-[10px] ml-0.5"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- 2. HIGH-TECH DASHBOARD ACCOUNT FEED LINK -->
+            <div id="otpVerifyPanel" class="hidden premium-glass rounded-3xl p-6 md:p-10 shadow-2xl cyber-glow text-center border border-white/[0.03]">
+                <div class="mb-8">
+                    <div class="inline-flex p-4 bg-gradient-to-b from-indigo-500/10 to-purple-500/0 text-indigo-400 rounded-2xl mb-4 border border-indigo-500/20 shadow-inner">
+                        <i class="fa-solid fa-shield-heart text-3xl"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Enter OTP Code</h2>
+                    <p class="text-xs text-slate-400 mt-2 max-w-xs mx-auto leading-relaxed">Type the 4-digit security code displayed in the top network notification banner overlay.</p>
+                </div>
+                
+                <div class="space-y-5 max-w-sm mx-auto">
+                    <div class="text-left">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 px-1">4-Digit Security Code</label>
+                        <input type="text" id="otpCodeInput" maxlength="4" placeholder="• • • •" class="w-full bg-[#080c14]/90 border border-slate-800/80 rounded-xl py-3.5 text-center text-lg font-black tracking-[1.5em] pl-[1.5em] text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
+                    </div>
+                    <button onclick="confirmLoginOTP()" class="w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:opacity-95 text-white font-extrabold text-xs uppercase tracking-wider py-4 px-4 rounded-xl shadow-xl shadow-indigo-500/10 active:scale-[0.98] transition-all flex items-center justify-center gap-2 duration-200">
+                        Confirm & Authorize Login <i class="fa-solid fa-circle-check text-xs"></i>
+                    </button>
+                    <button onclick="exitOtpVerificationStage()" class="text-xs text-slate-500 font-bold hover:text-slate-400 block mx-auto pt-1">Change Phone Number</button>
+                </div>
+            </div>
+
             <div id="autoDashboardPanel" class="hidden space-y-5">
-                <div class="premium-glass rounded-2xl p-6 shadow-xl text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-4 border border-white/[0.02]">
-                    <div class="space-y-1">
-                        <span class="text-[9px] font-black text-blue-400 uppercase tracking-widest bg-blue-500/10 px-2.5 py-1 rounded-md border border-blue-500/20">Authenticated Node</span>
+                <div class="premium-glass rounded-2xl p-6 shadow-xl flex flex-col md:flex-row items-center justify-between gap-4 border border-white/[0.02]">
+                    <div class="space-y-1 text-center md:text-left">
+                        <span class="text-[9px] font-black text-emerald-400 uppercase tracking-widest bg-emerald-500/10 px-2.5 py-1 rounded-md border border-emerald-500/20">OTP Verified Session</span>
                         <h2 class="text-xl font-extrabold text-white tracking-tight mt-1.5">Welcome Back, <span id="welcomeStudentName" class="bg-gradient-to-r from-blue-400 via-indigo-200 to-white bg-clip-text text-transparent">Student</span>!</h2>
                     </div>
-                    <div class="bg-[#080c14]/60 border border-slate-800 p-3 rounded-xl flex items-center gap-3 shadow-inner">
-                        <div class="text-left">
-                            <span class="text-[8px] font-black text-slate-500 uppercase tracking-wider block">Roster Index</span>
-                            <span id="welcomeStudentId" class="text-xs font-black text-blue-400 tracking-widest"></span>
+                    <div class="bg-[#080c14]/60 border border-slate-800 p-3 rounded-xl flex items-center gap-3 shadow-inner text-right">
+                        <div>
+                            <span class="text-[8px] font-black text-slate-500 uppercase tracking-wider block">Linked Mobile</span>
+                            <span id="welcomeStudentPhone" class="text-xs font-black text-blue-400 tracking-wider"></span>
                         </div>
                     </div>
                 </div>
@@ -129,11 +122,9 @@
                     <span class="text-[10px] text-slate-500 font-bold">Real-time Stream</span>
                 </div>
 
-                <!-- DYNAMICALLY INJECTED CARDS SLIDE FRAME -->
                 <div id="testCardsFeedContainer" class="space-y-3 max-h-[60vh] overflow-y-auto pr-1 custom-scroll"></div>
             </div>
 
-            <!-- 3. GRAPHIC PREMIUM DEEP ANALYTICS PROFILE BOARD VIEW -->
             <div id="resultsWrapper" class="hidden space-y-5">
                 <div class="flex justify-start">
                     <button onclick="backToTestFeed()" class="bg-slate-900/90 hover:bg-slate-800 text-[10px] font-black uppercase tracking-wider text-blue-400 border border-slate-800 rounded-xl px-4 py-3 shadow-md transition-all flex items-center gap-2 active:scale-95 duration-200">
@@ -143,14 +134,12 @@
                 <div id="activeCardContainer" class="animate-fade-in"></div>
             </div>
 
-            <!-- UI Errors Box Layout -->
             <div id="errorMessage" class="hidden mt-4 p-4 bg-red-950/30 backdrop-blur-md border border-red-900/50 text-red-400 text-xs font-bold rounded-xl flex items-center gap-2.5 shadow-lg">
                 <i class="fa-solid fa-triangle-exclamation text-base"></i>
                 <span id="errorText">Error matching records.</span>
             </div>
         </div>
 
-        <!-- RECONSTRUCTED SECURE TEACHER PORTAL DISPLAY CONSOLE -->
         <div id="teacherCard" class="hidden premium-glass rounded-3xl shadow-2xl p-6 max-w-md w-full border border-white/[0.03] cyber-glow transition-all duration-300">
             <div id="pinGatewaySection" class="space-y-5">
                 <div class="text-center">
@@ -181,8 +170,8 @@
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-wider mb-1.5 px-0.5">Account ID Code</label>
-                            <input type="text" id="inputStudentId" required placeholder="e.g. BB-101" class="w-full bg-[#080c14] border border-slate-800 rounded-xl px-3.5 py-3 font-bold text-white focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase">
+                            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-wider mb-1.5 px-0.5">Student Mobile Phone Number</label>
+                            <input type="tel" id="inputStudentPhone" required maxlength="10" placeholder="e.g. 9876543210" class="w-full bg-[#080c14] border border-slate-800 rounded-xl px-3.5 py-3 font-bold text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                         <div>
                             <label class="block text-[10px] font-black text-slate-400 uppercase tracking-wider mb-1.5 px-0.5">Full Name</label>
@@ -218,7 +207,6 @@
         </div>
     </main>
 
-    <!-- Base Layout Cinematic Footer -->
     <footer class="bg-[#080c12] text-slate-600 text-center text-[9px] font-bold py-4 border-t border-slate-900 tracking-[0.25em] uppercase px-5 relative z-50">
         &copy; 2026 Bright Brain Tutorials &bull; Gurugram. All Academic Performance Management Rights Reserved.
     </footer>
@@ -231,11 +219,14 @@
         let globalCachedCards = {}; 
         let secretTapCount = 0;
         let secretTapTimer = null;
+        
+        let activeGeneratedOtp = null;
+        let temporaryTargetPhone = null;
 
         document.addEventListener("DOMContentLoaded", () => {
-            const savedId = localStorage.getItem("app_student_auth_id");
-            if (savedId) {
-                showStudentDashboardView(savedId);
+            const savedPhone = localStorage.getItem("app_student_auth_phone");
+            if (savedPhone) {
+                showStudentDashboardView(savedPhone);
                 loadStudentTestFeed(); 
             }
         });
@@ -244,16 +235,11 @@
             secretTapCount++;
             clearTimeout(secretTapTimer);
             secretTapTimer = setTimeout(() => { secretTapCount = 0; }, 1500);
-
-            if (secretTapCount === 3) {
-                secretTapCount = 0;
-                enterTeacherPortalView();
-            }
+            if (secretTapCount === 3) { secretTapCount = 0; enterTeacherPortalView(); }
         }
 
         function enterTeacherPortalView() {
-            systemViewState = "teacher";
-            hideUiAlerts();
+            systemViewState = "teacher"; hideUiAlerts();
             document.getElementById("studentCard").classList.add("hidden");
             document.getElementById("logoutBtn").classList.add("hidden");
             document.getElementById("teacherCard").classList.remove("hidden");
@@ -266,51 +252,76 @@
             document.getElementById("backToStudentBtn").classList.add("hidden");
             document.getElementById("studentCard").classList.remove("hidden");
             resetTeacherDashboardState();
-            
-            const savedId = localStorage.getItem("app_student_auth_id");
-            if(savedId) {
-                document.getElementById("logoutBtn").classList.remove("hidden");
-            }
+            if(localStorage.getItem("app_student_auth_phone")) document.getElementById("logoutBtn").classList.remove("hidden");
         }
 
-        async function handleStudentLogin() {
-            const idInput = document.getElementById("studentSearchId").value.trim().toUpperCase();
-            if(!idInput) { alert("Please type your Student ID to log in."); return; }
+        // OTP STEP 1: VERIFY FORMAT AND SEND CODE
+        function requestLoginOTP() {
+            const phoneVal = document.getElementById("studentPhoneInput").value.trim();
+            if (phoneVal.length !== 10 || isNaN(phoneVal)) { alert("Please input a valid 10-digit mobile number."); return; }
             
-            const btn = document.getElementById("loginSubmitBtn");
-            const btnTxt = document.getElementById("loginBtnText");
+            temporaryTargetPhone = phoneVal;
+            activeGeneratedOtp = Math.floor(1000 + Math.random() * 9000).toString(); // Generates random 4-digit number
             
-            btn.disabled = true;
-            btnTxt.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin mr-1.5"></i> Resolving Cryptographic Ledger...`;
+            document.getElementById("phoneScreenPanel").classList.add("hidden");
+            document.getElementById("otpVerifyPanel").classList.remove("hidden");
             
-            localStorage.setItem("app_student_auth_id", idInput);
+            // Pop the premium notification banner on top screen layer
+            document.getElementById("popupOtpCode").innerText = activeGeneratedOtp;
+            const popup = document.getElementById("otpPopupBanner");
+            popup.classList.remove("hidden");
             
-            setTimeout(() => {
-                showStudentDashboardView(idInput);
-                loadStudentTestFeed();
-                btn.disabled = false;
-                btnTxt.innerHTML = `Unlock Portal Console <i class="fa-solid fa-arrow-right text-xs ml-0.5"></i>`;
-            }, 800);
+            setTimeout(() => { popup.classList.add("hidden"); }, 7000); // Banner hides after 7 seconds automatically
         }
 
-        function showStudentDashboardView(studentId) {
-            document.getElementById("loginScreenPanel").classList.add("hidden");
+        function exitValidationStateWithError(msg) {
+            document.getElementById("otpVerifyPanel").classList.add("hidden");
+            document.getElementById("phoneScreenPanel").classList.remove("hidden");
+            document.getElementById("otpCodeInput").value = "";
+            alert(msg);
+        }
+
+        function exitOtpVerificationStage() {
+            document.getElementById("otpVerifyPanel").classList.add("hidden");
+            document.getElementById("phoneScreenPanel").classList.remove("hidden");
+            document.getElementById("otpCodeInput").value = "";
+            document.getElementById("otpPopupBanner").classList.add("hidden");
+        }
+
+        // OTP STEP 2: VERIFY SUBMITTED CODE
+        function confirmLoginOTP() {
+            const typedOtp = document.getElementById("otpCodeInput").value.trim();
+            if (typedOtp !== activeGeneratedOtp) { alert("Invalid security code token. Please check the top banner banner code again."); return; }
+            
+            document.getElementById("otpPopupBanner").classList.add("hidden");
+            localStorage.setItem("app_student_auth_phone", temporaryTargetPhone);
+            
+            showStudentDashboardView(temporaryTargetPhone);
+            loadStudentTestFeed();
+        }
+
+        function showStudentDashboardView(phoneNum) {
+            document.getElementById("phoneScreenPanel").className = "hidden shadow-2xl cyber-glow text-center border border-white/[0.03]";
+            document.getElementById("otpVerifyPanel").classList.add("hidden");
             document.getElementById("autoDashboardPanel").classList.remove("hidden");
             document.getElementById("logoutBtn").classList.remove("hidden");
-            document.getElementById("welcomeStudentId").innerText = studentId;
+            document.getElementById("welcomeStudentPhone").innerText = "+91 " + phoneNum;
             document.getElementById("welcomeStudentName").innerText = localStorage.getItem("app_student_cached_name") || "Student";
         }
 
         function handleStudentLogout() {
-            localStorage.removeItem("app_student_auth_id");
+            localStorage.removeItem("app_student_auth_phone");
             localStorage.removeItem("app_student_cached_name");
-            document.getElementById("studentSearchId").value = "";
+            document.getElementById("studentPhoneInput").value = "";
+            document.getElementById("otpCodeInput").value = "";
             document.getElementById("autoDashboardPanel").classList.add("hidden");
             document.getElementById("resultsWrapper").classList.add("hidden");
             document.getElementById("logoutBtn").classList.add("hidden");
-            document.getElementById("loginScreenPanel").classList.remove("hidden");
+            document.getElementById("phoneScreenPanel").classList.remove("hidden");
             document.getElementById("errorMessage").classList.add("hidden");
             globalCachedCards = {};
+            activeGeneratedOtp = null;
+            temporaryTargetPhone = null;
         }
 
         function resetTeacherDashboardState() {
@@ -330,7 +341,7 @@
         }
 
         async function loadStudentTestFeed() {
-            const queryId = localStorage.getItem("app_student_auth_id");
+            const queryPhone = localStorage.getItem("app_student_auth_phone");
             const feedContainer = document.getElementById("testCardsFeedContainer");
             const err = document.getElementById("errorMessage");
             const errTxt = document.getElementById("errorText");
@@ -353,7 +364,7 @@
                         const tCode = row.test;
                         if (!testGroups[tCode]) { testGroups[tCode] = []; }
                         testGroups[tCode].push({
-                            id: row.id,
+                            phone: row.phone.toString().trim(),
                             marks: Number(row.marks),
                             maxMarks: Number(row.maxMarks) || 40
                         });
@@ -377,15 +388,16 @@
                             if (i > 0 && testGroups[tCode][i].marks < testGroups[tCode][i-1].marks) {
                                 currentRank = i + 1;
                             }
-                            ranksMap[tCode][testGroups[tCode][i].id.toUpperCase()] = {
+                            ranksMap[tCode][testGroups[tCode][i].phone] = {
                                 rank: currentRank,
                                 percentile: (((totalEntries - currentRank) / totalEntries) * 100).toFixed(2)
                             };
                         }
                     });
 
+                    // Filters metrics strictly matching the verified phone number string row parameter
                     const targetStudentScores = data.scores.filter(row => 
-                        row.id.toUpperCase() === queryId.toUpperCase()
+                        row.phone.toString().trim() === queryPhone.toString().trim()
                     );
 
                     if (targetStudentScores.length > 0) {
@@ -400,7 +412,7 @@
                             const currentMarks = Number(row.marks);
                             const calcPct = ((currentMarks / currentMax) * 100).toFixed(1);
                             
-                            const studentStats = ranksMap[row.test][queryId.toUpperCase()] || { rank: "-", percentile: "0.00" };
+                            const studentStats = ranksMap[row.test][queryPhone.toString().trim()] || { rank: "-", percentile: "0.00" };
                             const globalStats = statsMap[row.test] || { average: "0", totalStudents: 0 };
                             const isPassed = Number(calcPct) >= 33;
 
@@ -439,7 +451,6 @@
                                         <span class="text-[9px] font-black px-3 py-1 rounded-lg uppercase tracking-wider ${isPassed ? 'bg-emerald-500/30 border border-emerald-400/30 shadow-inner' : 'bg-red-500/30 border border-red-400/30 shadow-inner'}">${isPassed ? 'PASS' : 'FAIL'}</span>
                                     </div>
 
-                                    <!-- Circular Gauge Metrics Framework Structure -->
                                     <div class="my-12 inline-flex items-center justify-center relative">
                                         <div class="w-40 h-40 rounded-full border-[7px] border-white/10 border-t-white flex flex-col justify-center items-center shadow-xl relative bg-black/5">
                                             <span class="text-5xl font-black tracking-tighter border-b-2 border-white/20 pb-0.5 w-24 block">${currentMarks}</span>
@@ -465,21 +476,21 @@
                             `;
                         });
                     } else {
-                        feedContainer.innerHTML = `<div class="text-center py-10 text-slate-400 text-xs font-bold premium-glass rounded-2xl border border-slate-800 px-4 uppercase tracking-wider">No active deployment rows synced to this hardware node ID.</div>`;
+                        // Safe failure fallback state if number logic is fine but missing database match entries
+                        exitValidationStateWithError("This mobile number is not registered inside our records roster file database.");
                     }
                 }
             } catch(ex) {
-                feedContainer.innerHTML = `<div class="text-center py-10 text-red-400 text-xs font-bold premium-glass rounded-2xl border border-red-900 px-4 uppercase tracking-wider">Cloud proxy pipeline connection error.</div>`;
+                errTxt.innerText = "Cloud proxy pipeline link compilation mistake.";
+                err.classList.remove("hidden");
             }
         }
 
         function displayResultCard(testKey, elementIdx) {
             const targetBtn = document.getElementById(`viewBtn-${elementIdx}`);
             if (!targetBtn) return;
-
             targetBtn.disabled = true;
             targetBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin mr-1"></i> Syncing...`;
-
             setTimeout(() => {
                 if(globalCachedCards[testKey]) {
                     document.getElementById("autoDashboardPanel").classList.add("hidden");
@@ -503,9 +514,7 @@
                 document.getElementById("pinGatewaySection").classList.add("hidden");
                 document.getElementById("teacherFormPanel").classList.remove("hidden");
                 document.getElementById("gatewayPin").value = "";
-            } else {
-                alert("Authorization Denied. Invalid PIN.");
-            }
+            } else { alert("Authorization Denied. Invalid PIN."); }
         }
 
         async function submitFormEntryToCloud(e) {
@@ -518,7 +527,7 @@
             alertBox.classList.add("hidden");
 
             const payload = {
-                id: document.getElementById("inputStudentId").value.trim().toUpperCase(),
+                phone: document.getElementById("inputStudentPhone").value.trim(),
                 name: document.getElementById("inputStudentName").value.trim(),
                 test: document.getElementById("inputTestCode").value.trim(),
                 marks: Number(document.getElementById("inputMarks").value),
@@ -528,22 +537,15 @@
             };
 
             try {
-                const res = await fetch(DEPLOYMENT_API_URL, {
-                    method: "POST",
-                    body: JSON.stringify(payload)
-                });
+                const res = await fetch(DEPLOYMENT_API_URL, { method: "POST", body: JSON.stringify(payload) });
                 const responseData = await res.json();
-
                 if(responseData.result === "success") {
                     alertBox.className = "mt-4 p-4 text-xs font-bold rounded-xl flex items-center gap-2 border bg-emerald-950/40 border-emerald-800 text-emerald-400";
                     alertBox.innerHTML = `<i class="fa-solid fa-circle-check text-sm"></i> Matrix block data pushed successfully.`;
-                    
-                    document.getElementById("inputStudentId").value = "";
+                    document.getElementById("inputStudentPhone").value = "";
                     document.getElementById("inputStudentName").value = "";
                     document.getElementById("inputMarks").value = "";
-                } else {
-                    throw new Error();
-                }
+                } else { throw new Error(); }
             } catch {
                 alertBox.className = "mt-4 p-4 text-xs font-bold rounded-xl flex items-center gap-2 border bg-red-950/40 border-red-800 text-red-400";
                 alertBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-sm"></i> Node link transaction broadcast breakdown.`;
