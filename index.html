@@ -45,8 +45,10 @@
                         <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Enter Student ID</label>
                         <input type="text" id="studentSearchId" placeholder="e.g. BB-101" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase transition-all">
                     </div>
-                    <button onclick="handleStudentLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-3.5 px-4 rounded-xl shadow-lg active:scale-[0.99] transition-all flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-right-to-bracket"></i> Verify & Save ID
+                    <button id="loginSubmitBtn" onclick="handleStudentLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-3.5 px-4 rounded-xl shadow-lg active:scale-[0.99] transition-all flex items-center justify-center gap-2">
+                        <span id="loginBtnText" class="flex items-center gap-2">
+                            <i class="fa-solid fa-right-to-bracket"></i> Verify & Save ID
+                        </span>
                     </button>
                 </div>
             </div>
@@ -134,7 +136,6 @@
                             <input type="number" id="inputMaxMarks" required min="1" value="40" placeholder="e.g. 40, 80" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs font-semibold text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                     </div>
-                    <!-- NEW CUSTOM USER MODES AND TIME FIELDS -->
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block text-[11px] font-bold text-slate-400 uppercase mb-1">Duration (Time)</label>
@@ -178,9 +179,21 @@
             const idInput = document.getElementById("studentSearchId").value.trim().toUpperCase();
             if(!idInput) { alert("Please type your Student ID to log in."); return; }
             
+            const btn = document.getElementById("loginSubmitBtn");
+            const btnTxt = document.getElementById("loginBtnText");
+            
+            // Loading on Login Screen
+            btn.disabled = true;
+            btnTxt.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Authenticating ID...`;
+            
             localStorage.setItem("app_student_auth_id", idInput);
-            showStudentDashboardView(idInput);
-            loadStudentTestFeed();
+            
+            setTimeout(() => {
+                showStudentDashboardView(idInput);
+                loadStudentTestFeed();
+                btn.disabled = false;
+                btnTxt.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i> Verify & Save ID`;
+            }, 800);
         }
 
         function showStudentDashboardView(studentId) {
@@ -228,17 +241,6 @@
             }
         }
 
-        function verifyTeacherGatePIN() {
-            const val = document.getElementById("gatewayPin").value.trim();
-            if(val === ACCESS_PIN) {
-                document.getElementById("pinGatewaySection").classList.add("hidden");
-                document.getElementById("teacherFormPanel").classList.remove("hidden");
-                document.getElementById("gatewayPin").value = "";
-            } else {
-                alert("Authorization Denied. Invalid PIN.");
-            }
-        }
-
         function resetTeacherDashboardState() {
             document.getElementById("pinGatewaySection").classList.remove("hidden");
             document.getElementById("teacherFormPanel").classList.add("hidden");
@@ -260,7 +262,12 @@
             const err = document.getElementById("errorMessage");
             const errTxt = document.getElementById("errorText");
 
-            feedContainer.innerHTML = `<div class="text-center py-6 text-slate-400 text-xs"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i>Loading live test lists...</div>`;
+            // Premium Skeleton Feed Loader
+            feedContainer.innerHTML = `
+                <div class="text-center py-10 text-slate-400 font-medium">
+                    <i class="fa-solid fa-circle-notch fa-spin text-3xl text-blue-500 mb-3 block mx-auto"></i>
+                    Syncing secure test feed credentials...
+                </div>`;
             globalCachedCards = {}; 
 
             try {
@@ -316,7 +323,7 @@
 
                         feedContainer.innerHTML = ""; 
                         
-                        targetStudentScores.forEach((row) => {
+                        targetStudentScores.forEach((row, idx) => {
                             const currentMax = Number(row.maxMarks) || 40;
                             const currentMarks = Number(row.marks);
                             const calcPct = ((currentMarks / currentMax) * 100).toFixed(1);
@@ -329,7 +336,7 @@
                             let dateLabel = row.test.includes('(') ? row.test.split('(')[1].replace(')', '') : 'Active Term';
 
                             const cardRow = document.createElement("div");
-                            cardRow.className = "bg-white rounded-2xl p-4 shadow border border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-slate-800";
+                            cardRow.className = "bg-white rounded-2xl p-4 shadow border border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-slate-800 animate-fadeIn";
                             cardRow.innerHTML = `
                                 <div class="space-y-1">
                                     <div class="text-xs font-black uppercase text-slate-900 tracking-tight">${testLabel}</div>
@@ -340,7 +347,7 @@
                                     </div>
                                 </div>
                                 <div class="w-full sm:w-auto flex justify-end">
-                                    <button onclick="displayResultCard('${row.test.replace(/'/g, "\\'")}')" class="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-[11px] uppercase tracking-wider px-4 py-2.5 rounded-xl shadow-md transition-all active:scale-95">
+                                    <button id="viewBtn-${idx}" onclick="displayResultCard('${row.test.replace(/'/g, "\\'")}', ${idx})" class="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-[11px] uppercase tracking-wider px-4 py-2.5 rounded-xl shadow-md transition-all flex items-center gap-2">
                                         View Result
                                     </button>
                                 </div>
@@ -390,12 +397,25 @@
             }
         }
 
-        function displayResultCard(testKey) {
-            if(globalCachedCards[testKey]) {
-                document.getElementById("autoDashboardPanel").classList.add("hidden");
-                document.getElementById("activeCardContainer").innerHTML = globalCachedCards[testKey];
-                document.getElementById("resultsWrapper").classList.remove("hidden");
-            }
+        function displayResultCard(testKey, elementIdx) {
+            const targetBtn = document.getElementById(`viewBtn-${elementIdx}`);
+            if (!targetBtn) return;
+
+            // Trigger visual button loader inside the row item list
+            targetBtn.disabled = true;
+            targetBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Fetching Analytics...`;
+
+            // Short tactical loading delay to show analytics are assembling smoothly
+            setTimeout(() => {
+                if(globalCachedCards[testKey]) {
+                    document.getElementById("autoDashboardPanel").classList.add("hidden");
+                    document.getElementById("activeCardContainer").innerHTML = globalCachedCards[testKey];
+                    document.getElementById("resultsWrapper").classList.remove("hidden");
+                }
+                // Reset button text style properties behind the curtain
+                targetBtn.disabled = false;
+                targetBtn.innerHTML = `View Result`;
+            }, 600);
         }
 
         function backToTestFeed() {
@@ -410,7 +430,7 @@
             const alertBox = document.getElementById("teacherConsoleMessage");
 
             btn.disabled = true;
-            btn.innerText = "Uploading to Database...";
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Saving to Cloud Sheets...`;
             alertBox.classList.add("hidden");
 
             const payload = {
