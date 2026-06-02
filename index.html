@@ -9,44 +9,77 @@
 </head>
 <body class="bg-slate-900 font-sans min-h-screen flex flex-col justify-between text-white">
 
+    <!-- Header Banner -->
     <header class="bg-slate-800 text-white shadow-md px-4 py-4 flex justify-between items-center border-b border-slate-700">
         <div>
             <h1 class="text-lg md:text-xl font-bold tracking-wide text-blue-400">Bright Brain Tutorials</h1>
             <p class="text-[10px] text-slate-400 font-medium tracking-wider">LIVE PERFORMANCE DASHBOARD</p>
         </div>
-        <div>
+        <div class="flex gap-2">
+            <button id="logoutBtn" onclick="handleStudentLogout()" class="hidden bg-slate-700 hover:bg-slate-600 text-slate-300 text-[11px] font-bold uppercase tracking-wider px-3 py-2 rounded-lg transition-all">
+                <i class="fa-solid fa-right-from-bracket mr-1"></i>Logout
+            </button>
             <button id="toggleViewBtn" onclick="togglePortalView()" class="bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold uppercase tracking-wider px-3 py-2 rounded-lg transition-all shadow-sm">
                 <i class="fa-solid fa-user-shield mr-1"></i>Teacher Login
             </button>
         </div>
     </header>
 
-    <main class="flex-grow flex items-center justify-center p-2 md:p-6">
+    <!-- Main Content Area -->
+    <main class="flex-grow flex items-center justify-center p-4">
         
+        <!-- STUDENT SYSTEM PORTAL CONTAINER -->
         <div id="studentCard" class="w-full max-w-xl transition-all duration-300">
             
-            <div class="bg-slate-800 rounded-2xl p-4 shadow-xl border border-slate-700 mb-6">
-                <div class="text-center mb-4">
-                    <h2 class="text-lg font-bold text-slate-100">Check Your Test Analytics</h2>
-                    <p class="text-xs text-slate-400 mt-0.5">Enter your full name below to see your deep performance breakdown.</p>
+            <!-- 1. STUDENT ID LOGIN SCREEN -->
+            <div id="loginScreenPanel" class="bg-slate-800 rounded-2xl p-6 shadow-xl border border-slate-700">
+                <div class="text-center mb-5">
+                    <div class="inline-flex p-3 bg-blue-500/10 text-blue-400 rounded-full mb-2 border border-blue-500/20">
+                        <i class="fa-solid fa-id-card-clip text-2xl"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-100">Student Portal Login</h2>
+                    <p class="text-xs text-slate-400 mt-0.5">Enter your unique Student ID to log into your portal account.</p>
                 </div>
-                <div class="space-y-3 max-w-md mx-auto">
-                    <input type="text" id="studentSearchName" placeholder="Enter student name..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm font-semibold text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
-                    <button onclick="fetchStudentScores()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-3 px-4 rounded-xl shadow-lg active:scale-[0.99] transition-all flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-chart-pie"></i> Retrieve Analytics Card
+                <div class="space-y-4 max-w-md mx-auto">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Enter Student ID</label>
+                        <input type="text" id="studentSearchId" placeholder="e.g. BB-101" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase transition-all">
+                    </div>
+                    <button onclick="handleStudentLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-3.5 px-4 rounded-xl shadow-lg active:scale-[0.99] transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-right-to-bracket"></i> Verify & Save ID
                     </button>
                 </div>
             </div>
 
-            <div id="resultsWrapper" class="hidden space-y-6">
+            <!-- 2. DASHBOARD HOME (Skipped automatically after login) -->
+            <div id="autoDashboardPanel" class="hidden bg-slate-800 rounded-2xl p-8 shadow-xl border border-slate-700 text-center space-y-6">
+                <div>
+                    <h2 class="text-2xl font-black text-slate-100">Welcome, <span id="welcomeStudentName" class="text-blue-400">Student</span>!</h2>
+                    <p class="text-xs text-slate-400 mt-1">ID: <span id="welcomeStudentId" class="font-bold text-slate-300"></span> &bull; Account Active</p>
                 </div>
 
+                <!-- ICON BUTTON TO VIEW RESULTS -->
+                <div class="py-4">
+                    <button onclick="fetchStudentScores()" class="group mx-auto bg-gradient-to-tr from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white w-32 h-32 rounded-3xl shadow-xl shadow-blue-900/40 border border-blue-400/20 flex flex-col items-center justify-center gap-2 transition-all active:scale-95 duration-200">
+                        <i class="fa-solid fa-square-poll-vertical text-4xl group-hover:scale-110 transition-transform"></i>
+                        <span class="text-xs font-bold tracking-wide uppercase">View Result</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3. DESIGNER ANALYTICS MULTI-CARD DISPLAY SCROLL STACK -->
+            <div id="resultsWrapper" class="hidden space-y-8 mt-6 max-h-[70vh] overflow-y-auto pr-2">
+                <!-- Dynamically populated via JS -->
+            </div>
+
+            <!-- Local UI Errors -->
             <div id="errorMessage" class="hidden mt-4 p-3 bg-red-950/50 border border-red-800 text-red-400 text-xs font-semibold rounded-xl flex items-center gap-2">
                 <i class="fa-solid fa-circle-exclamation text-sm"></i>
-                <span id="errorText">Error connecting to database.</span>
+                <span id="errorText">Error matching records.</span>
             </div>
         </div>
 
+        <!-- TEACHER PORTAL CARD -->
         <div id="teacherCard" class="hidden bg-slate-800 rounded-2xl shadow-xl p-4 md:p-6 max-w-md w-full border border-slate-700 transition-all duration-300">
             <div id="pinGatewaySection" class="space-y-4">
                 <div class="text-center mb-4">
@@ -81,12 +114,16 @@
                             <option value="TS-05: Periodic Classification (June 28)">TS-05: Periodic Classification (June 28)</option>
                         </select>
                     </div>
-
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-400 uppercase mb-1">Student Full Name</label>
-                        <input type="text" id="inputStudentName" required placeholder="Full registered name" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs font-semibold text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-400 uppercase mb-1">Student ID</label>
+                            <input type="text" id="inputStudentId" required placeholder="e.g. BB-101" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs font-semibold text-white focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-400 uppercase mb-1">Student Name</label>
+                            <input type="text" id="inputStudentName" required placeholder="Full name" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs font-semibold text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
                     </div>
-
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block text-[11px] font-bold text-slate-400 uppercase mb-1">Marks Obtained</label>
@@ -94,30 +131,62 @@
                         </div>
                         <div>
                             <label class="block text-[11px] font-bold text-slate-400 uppercase mb-1">Maximum Marks</label>
-                            <input type="number" id="inputMaxMarks" required min="1" value="40" placeholder="e.g. 40, 80, 100" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs font-semibold text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <input type="number" id="inputMaxMarks" required min="1" value="40" placeholder="e.g. 40, 80" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs font-semibold text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                     </div>
-
                     <button type="submit" id="submitFormBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-3 rounded-xl shadow-md transition-all mt-2">
                         Upload Score to Live Sheets
                     </button>
                 </form>
             </div>
-            
             <div id="teacherConsoleMessage" class="hidden mt-4 p-3 text-xs font-semibold rounded-xl flex items-center gap-2 border"></div>
         </div>
     </main>
 
+    <!-- Footer Copyright Branding -->
     <footer class="bg-slate-950 text-slate-500 text-center text-[10px] py-4 border-t border-slate-800 font-semibold tracking-wider uppercase px-4">
         &copy; 2026 Bright Brain Tutorials &bull; Gurugram. All Academic Performance Management Rights Reserved.
     </footer>
 
     <script>
-        // CONFIGURATION NETWORK CREDENTIAL APIS
         const DEPLOYMENT_API_URL = "https://script.google.com/macros/s/AKfycbxV3XEmf8Zz2_cLJ-ddofu4ih4k4IuUAo4ZHmLiF1OCKPtYuedsyjC2zz3Kk83gyzEV/exec";
         const ACCESS_PIN = "031987";
 
         let systemViewState = "student";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const savedId = localStorage.getItem("app_student_auth_id");
+            if (savedId) {
+                showStudentDashboardView(savedId);
+            }
+        });
+
+        async function handleStudentLogin() {
+            const idInput = document.getElementById("studentSearchId").value.trim().toUpperCase();
+            if(!idInput) { alert("Please type your Student ID to log in."); return; }
+            
+            localStorage.setItem("app_student_auth_id", idInput);
+            showStudentDashboardView(idInput);
+        }
+
+        function showStudentDashboardView(studentId) {
+            document.getElementById("loginScreenPanel").classList.add("hidden");
+            document.getElementById("autoDashboardPanel").classList.remove("hidden");
+            document.getElementById("logoutBtn").classList.remove("hidden");
+            document.getElementById("welcomeStudentId").innerText = studentId;
+            document.getElementById("welcomeStudentName").innerText = localStorage.getItem("app_student_cached_name") || "Student";
+        }
+
+        function handleStudentLogout() {
+            localStorage.removeItem("app_student_auth_id");
+            localStorage.removeItem("app_student_cached_name");
+            document.getElementById("studentSearchId").value = "";
+            document.getElementById("autoDashboardPanel").classList.add("hidden");
+            document.getElementById("resultsWrapper").classList.add("hidden");
+            document.getElementById("logoutBtn").classList.add("hidden");
+            document.getElementById("loginScreenPanel").classList.remove("hidden");
+            document.getElementById("errorMessage").classList.add("hidden");
+        }
 
         function togglePortalView() {
             const btn = document.getElementById("toggleViewBtn");
@@ -131,12 +200,16 @@
                 btn.innerHTML = `<i class="fa-solid fa-graduation-cap mr-2"></i>Student Portal`;
                 sCard.classList.add("hidden");
                 tCard.classList.remove("hidden");
+                document.getElementById("logoutBtn").classList.add("hidden");
             } else {
                 systemViewState = "student";
                 btn.innerHTML = `<i class="fa-solid fa-user-shield mr-2"></i>Teacher Login`;
                 tCard.classList.add("hidden");
                 sCard.classList.remove("hidden");
                 resetTeacherDashboardState();
+                
+                const savedId = localStorage.getItem("app_student_auth_id");
+                if(savedId) document.getElementById("logoutBtn").classList.remove("hidden");
             }
         }
 
@@ -147,7 +220,7 @@
                 document.getElementById("teacherFormPanel").classList.remove("hidden");
                 document.getElementById("gatewayPin").value = "";
             } else {
-                alert("Authorization Denied. Invalid Secret Access Token Security Key.");
+                alert("Authorization Denied. Invalid PIN.");
             }
         }
 
@@ -164,12 +237,10 @@
         }
 
         async function fetchStudentScores() {
-            const queryName = document.getElementById("studentSearchName").value.trim();
+            const queryId = localStorage.getItem("app_student_auth_id");
             const wrapper = document.getElementById("resultsWrapper");
             const err = document.getElementById("errorMessage");
             const errTxt = document.getElementById("errorText");
-
-            if(!queryName) { alert("Please type a name to lookup."); return; }
 
             wrapper.classList.add("hidden");
             err.classList.add("hidden");
@@ -186,14 +257,14 @@
                         const tCode = row.test;
                         if (!testGroups[tCode]) { testGroups[tCode] = []; }
                         testGroups[tCode].push({
-                            name: row.name,
+                            id: row.id,
                             marks: Number(row.marks),
                             maxMarks: Number(row.maxMarks) || 40
                         });
                     });
 
                     const ranksMap = {};
-                    const statsMap = {}; // To compute averages dynamically
+                    const statsMap = {};
                     
                     Object.keys(testGroups).forEach(tCode => {
                         const totalEntries = testGroups[tCode].length;
@@ -210,34 +281,39 @@
                             if (i > 0 && testGroups[tCode][i].marks < testGroups[tCode][i-1].marks) {
                                 currentRank = i + 1;
                             }
-                            ranksMap[tCode][testGroups[tCode][i].name.toLowerCase().trim()] = {
+                            ranksMap[tCode][testGroups[tCode][i].id.toUpperCase()] = {
                                 rank: currentRank,
                                 percentile: (((totalEntries - currentRank) / totalEntries) * 100).toFixed(2)
                             };
                         }
                     });
 
+                    // Filters and isolates EVERY matching row matching this student ID
                     const targetStudentScores = data.scores.filter(row => 
-                        row.name.toLowerCase().trim() === queryName.toLowerCase().trim()
+                        row.id.toUpperCase() === queryId.toUpperCase()
                     );
 
                     if (targetStudentScores.length > 0) {
+                        const confirmedName = targetStudentScores[0].name;
+                        document.getElementById("welcomeStudentName").innerText = confirmedName;
+                        localStorage.setItem("app_student_cached_name", confirmedName);
+
+                        // Loops and dynamically appends an individual card layout for each separate test
                         targetStudentScores.forEach(row => {
                             const currentMax = Number(row.maxMarks) || 40;
                             const currentMarks = Number(row.marks);
                             const calcPct = ((currentMarks / currentMax) * 100).toFixed(1);
                             
-                            const studentStats = ranksMap[row.test][queryName.toLowerCase().trim()] || { rank: "-", percentile: "0.00" };
+                            const studentStats = ranksMap[row.test][queryId.toUpperCase()] || { rank: "-", percentile: "0.00" };
                             const globalStats = statsMap[row.test] || { average: "0", totalStudents: 0 };
                             
                             const isPassed = Number(calcPct) >= 33;
 
-                            // Create the premium Orange/Amber circular metric board card matching the user's reference image perfectly
                             const testDashboardCard = document.createElement("div");
-                            testDashboardCard.className = "bg-gradient-to-b from-amber-500 to-orange-600 rounded-3xl p-6 shadow-2xl relative overflow-hidden border border-amber-400/20 text-white text-center";
+                            testDashboardCard.className = "bg-gradient-to-b from-amber-500 to-orange-600 rounded-3xl p-6 shadow-2xl relative overflow-hidden border border-amber-400/20 text-white text-center mb-4";
                             testDashboardCard.innerHTML = `
                                 <div class="absolute top-3 left-4 text-left">
-                                    <span class="text-[10px] font-bold uppercase tracking-widest bg-amber-400/20 px-2 py-0.5 rounded border border-amber-300/20">Active Evaluation Ledger</span>
+                                    <span class="text-[10px] font-bold uppercase tracking-widest bg-amber-400/20 px-2 py-0.5 rounded border border-amber-300/20">Evaluation Record</span>
                                     <h3 class="text-sm font-extrabold tracking-wide mt-1">${row.test}</h3>
                                 </div>
                                 <div class="absolute top-3 right-4">
@@ -270,14 +346,14 @@
                         });
                         wrapper.classList.remove("hidden");
                     } else {
-                        errTxt.innerText = `No registered performance records discovered matching "${queryName}".`;
+                        errTxt.innerText = `No records posted yet for Student ID "${queryId}".`;
                         err.classList.remove("hidden");
                     }
                 } else {
                     throw new Error();
                 }
             } catch(ex) {
-                errTxt.innerText = "Error connecting to backend database cloud server endpoints.";
+                errTxt.innerText = "Error connecting to cloud server database pipelines.";
                 err.classList.remove("hidden");
             }
         }
@@ -292,6 +368,7 @@
             alertBox.classList.add("hidden");
 
             const payload = {
+                id: document.getElementById("inputStudentId").value.trim().toUpperCase(),
                 name: document.getElementById("inputStudentName").value.trim(),
                 test: document.getElementById("inputTestCode").value,
                 marks: Number(document.getElementById("inputMarks").value),
@@ -307,7 +384,7 @@
 
                 if(responseData.result === "success") {
                     alertBox.className = "mt-4 p-3 text-xs font-semibold rounded-xl flex items-center gap-2 border bg-green-950/40 border-green-800 text-green-400";
-                    alertBox.innerHTML = `<i class="fa-solid fa-circle-check text-sm"></i> Performance ledger entry added successfully!`;
+                    alertBox.innerHTML = `<i class="fa-solid fa-circle-check text-sm"></i> Entry successfully added!`;
                     document.getElementById("scoreUploadForm").reset();
                     document.getElementById("inputMaxMarks").value = "40";
                 } else {
@@ -315,7 +392,7 @@
                 }
             } catch {
                 alertBox.className = "mt-4 p-3 text-xs font-semibold rounded-xl flex items-center gap-2 border bg-red-950/40 border-red-800 text-red-400";
-                alertBox.innerHTML = `<i class="fa-solid fa-circle-exclamation text-sm"></i> Critical network push failure. Check parameters.`;
+                alertBox.innerHTML = `<i class="fa-solid fa-circle-exclamation text-sm"></i> Push failure. Check parameters.`;
             } finally {
                 alertBox.classList.remove("hidden");
                 btn.disabled = false;
